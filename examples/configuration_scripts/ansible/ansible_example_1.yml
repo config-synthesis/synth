@@ -1,0 +1,8 @@
+- hosts: all
+  tasks:
+    - ansible.builtin.file:
+        path: file.txt
+        state: touch
+    - ansible.builtin.file:
+        path: file.txt
+        state: absent

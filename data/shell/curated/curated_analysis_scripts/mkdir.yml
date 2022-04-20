@@ -1,0 +1,3 @@
+- shell: mkdir -p directory
+  analyze: true
+  level: 0

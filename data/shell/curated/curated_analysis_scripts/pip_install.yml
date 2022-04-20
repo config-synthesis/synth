@@ -1,0 +1,6 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends python3-minimal python3-pip
+- shell: pip install six
+  analyze: true
+  reduce:
+    - shell: pip install ujson

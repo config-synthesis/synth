@@ -1,0 +1,12 @@
+- ansible:
+    executable: ansible.builtin.user
+    arguments:
+      name: user1
+      state: present
+  analyze: true
+  reduce:
+    - ansible:
+        executable: ansible.builtin.user
+        arguments:
+          name: user2
+          state: present

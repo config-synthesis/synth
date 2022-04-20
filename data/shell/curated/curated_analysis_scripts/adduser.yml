@@ -1,0 +1,4 @@
+- shell: adduser user1
+  analyze: true
+  reduce:
+    - shell: adduser user2

@@ -1,0 +1,22 @@
+repos:
+- repo: https://gitlab.com/pycqa/flake8
+  rev: "3.8.4"
+  hooks:
+    - id: flake8
+      additional_dependencies:
+        # Install bandit manually to fix a bug with flake8-bandit.
+        # https://github.com/PyCQA/bandit/issues/837
+        # https://github.com/tylerwince/flake8-bandit/issues/21
+        - bandit==1.7.2
+        - flake8-annotations
+        - flake8-bandit
+        - flake8-blind-except
+        - flake8-broken-line
+        - flake8-bugbear
+        - flake8-builtins
+        - flake8-comprehensions
+        - flake8-docstrings
+        - flake8-import-order
+        - flake8-print
+        - flake8-type-annotations
+      exclude: .git|__pycache__|examples|ignored|sphinx-docs

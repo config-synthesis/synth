@@ -1,0 +1,12 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends ca-certificates
+- shell: apt-get install -y --no-install-recommends curl
+- shell: curl -fsSL https://deb.nodesource.com/setup_16.x -o /tmp/setup_16.x
+- shell: chmod +x /tmp/setup_16.x
+- shell: /tmp/setup_16.x
+- shell: apt-get install -y nodejs
+- shell: npm install -g npm
+- shell: npm install -g is-integer
+  analyze: true
+  reduce:
+    - shell: npm install -g is-object

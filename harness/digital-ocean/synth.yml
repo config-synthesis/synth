@@ -1,0 +1,28 @@
+# Playbook to provision ubuntu nodes.
+#
+# To Run:
+# $ cd harness/digital-ocean
+# $ ansible-playbook synth.yml
+
+---
+- hosts: nodes
+  vars:
+    is_vagrant: false
+    configure_docker_disk: false
+    configure_docker_systemd: false
+    synth_dir: "{{ ansible_env.HOME }}/synth"
+    synth_working_directory: "{{ ansible_env.HOME }}/synth-working-directory"
+    synth_cache_directory: "{{ synth_working_directory }}/cache"
+
+  vars_prompt:
+    - name: mysql_root_password
+      prompt: MySQL Root Password
+      private: yes
+  tasks:
+    - include_role:
+        name: timezone
+
+    - include_role:
+        name: synth
+      vars:
+        python_bin: "{{ pyenv_python_bin }}"

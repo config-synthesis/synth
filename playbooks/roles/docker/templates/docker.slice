@@ -1,0 +1,9 @@
+Description=Docker resources limit
+Before=slices.target
+
+
+[Slice]
+CPUAccounting=true
+CPUQota=25%
+MemoryAccounting=true
+MemoryMax=25%

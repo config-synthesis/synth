@@ -1,0 +1,43 @@
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      update_cache: true
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: ca-certificates
+      state: present
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: git
+      state: present
+- ansible:
+    executable: ansible.builtin.git
+    arguments:
+      repo: https://github.com/githubtraining/hellogitworld.git
+      dest: hellogitworld
+      clone: true
+- ansible:
+    executable: ansible.builtin.git
+    arguments:
+      repo: https://github.com/githubtraining/hellogitworld.git
+      dest: hellogitworld
+      clone: false
+      version: master
+- ansible:
+    executable: ansible.builtin.git
+    arguments:
+      repo: https://github.com/githubtraining/hellogitworld.git
+      dest: hellogitworld
+      clone: false
+      version: ef7bebf8bdb1919d947afe46ab4b2fb4278039b3
+  analyze: true
+  reduce:
+    - ansible:
+        executable: ansible.builtin.git
+        arguments:
+          repo: https://github.com/githubtraining/hellogitworld.git
+          dest: hellogitworld
+          clone: false
+          version: ebbbf773431ba07510251bb03f9525c7bab2b13a

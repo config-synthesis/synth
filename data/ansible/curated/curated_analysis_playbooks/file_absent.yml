@@ -1,0 +1,24 @@
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: filename
+      state: touch
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: filename
+      state: absent
+  analyze: true
+  level: 0
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: directory
+      state: directory
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: directory
+      state: absent
+  analyze: true
+  level: 0

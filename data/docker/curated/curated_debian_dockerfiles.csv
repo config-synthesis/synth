@@ -1,0 +1,8 @@
+repo_name,ref,url,branch,sha,repo_dir,path,symlink_target,setup_path,context_path,mounts
+add_user,,,,,add_user,Dockerfile,,,.,
+apt_packages,,,,,apt_packages,Dockerfile,,,.,
+fonts,,,,,fonts,Dockerfile,,Dockerfile.setup,.,
+install_ansible_collection,,,,,install_ansible_collection,Dockerfile,,Dockerfile.setup,.,
+install_python_package,,,,,install_python_package,Dockerfile,,Dockerfile.setup,.,
+install_ruby_gem,,,,,install_ruby_gem,Dockerfile,,Dockerfile.setup,.,
+set_variables,,,,,set_variables,Dockerfile,,,.,

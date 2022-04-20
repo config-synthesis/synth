@@ -1,0 +1,7 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends ruby
+- shell: gem install bundler
+- shell: gem install daemons
+  analyze: true
+  reduce:
+    - shell: gem install jwt

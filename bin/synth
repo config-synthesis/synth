@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+"""Synth entrypoint."""
+
+
+# Imports.
+from synth import cli
+
+
+def main():
+    """Run CLI."""
+    cli.run()
+
+
+# Invoke main.
+if __name__ == '__main__':
+    main()

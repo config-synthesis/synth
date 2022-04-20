@@ -1,0 +1,5 @@
+working_directory: "{{ synth_working_directory }}"
+cache_directory: "{{ synth_cache_directory }}"
+{% if mysql_root_password -%}
+mysql_password: "{{ mysql_root_password }}"
+{%- endif %}

@@ -1,0 +1,17 @@
+# Playbook to provision the local vagrant image.
+
+---
+
+- hosts: all
+  tasks:
+
+    - include_role:
+        name: timezone
+
+    - include_role:
+        name: systemd
+
+    - include_role:
+        name: synth
+      vars:
+        python_bin: "{{ pyenv_python_bin }}"

@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: synth.mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: synth
+      MYSQL_ALLOW_EMPTY_PASSWORD: "${MYSQL_ROOT_PASSWORD:-yes}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    ports:
+      - "3306:3306"
+    volumes:
+      - type: volume
+        source: mysql
+        target: /var/lib/mysql
+    command: --max-allowed-packet=1G --net-write-timeout=3600
+
+  apt-cache:
+    image: mbentley/apt-cacher-ng
+    container_name: synth.apt-cache
+    restart: unless-stopped
+    ports:
+      - "3142:3142"
+    volumes:
+      - type: volume
+        source: apt-cache
+        target: /var/cache/apt-cacher-ng
+
+  devpi:
+    image: muccg/devpi
+    container_name: synth.devpi
+    restart: unless-stopped
+    ports:
+      - "3141:3141"
+    volumes:
+      - type: volume
+        source: devpi
+        target: /data
+
+
+volumes:
+
+  mysql:
+    name: synth.mysql.data
+
+  apt-cache:
+    name: synth.apt-cache.volume
+
+  devpi:
+    name: synth.devpi.volume

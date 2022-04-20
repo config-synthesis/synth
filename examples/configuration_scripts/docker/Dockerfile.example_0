@@ -1,0 +1,5 @@
+FROM debian:11
+
+
+RUN touch config-file.json
+RUN echo '{"KEY1": "VALUE1", "KEY2": "VALUE2"}' > config-file.json

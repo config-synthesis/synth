@@ -1,0 +1,4 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends git
+- shell: git config --global user.name username
+  analyze: true

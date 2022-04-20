@@ -1,0 +1,8 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends software-properties-common
+- shell: rm /etc/apt/sources.list
+- shell: touch /etc/apt/sources.list
+- shell: add-apt-repository -y 'deb http://deb.debian.org/debian bullseye main'
+  analyze: true
+  reduce:
+    - shell: add-apt-repository -y 'deb http://deb.debian.org/debian bullseye-updates main'

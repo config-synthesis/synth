@@ -1,0 +1,13 @@
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: filename
+      state: touch
+- ansible:
+    executable: ansible.builtin.blockinfile
+    arguments:
+      path: filename
+      block: content
+      marker: '# ANSIBLE MANAGED BLOCK'
+  analyze: true
+  level: 0

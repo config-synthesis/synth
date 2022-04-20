@@ -1,0 +1,16 @@
+- ansible:
+    executable: ansible.builtin.command
+    arguments:
+      cmd: ansible-galaxy collection install community.general
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: locales
+      state: present
+      update_cache: true
+- ansible:
+    executable: community.general.locale_gen
+    arguments:
+      name: en_US.UTF-8
+      state: present
+  analyze: true

@@ -1,0 +1,31 @@
+---
+# handlers file for docker
+
+- name: Restart Procps
+  become: true
+  ansible.builtin.service:
+    name: procps
+    state: restarted
+
+- name: Systemd Daemon Reload
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart Docker Slice
+  become: true
+  ansible.builtin.service:
+    name: docker.slice
+    state: restarted
+
+- name: Restart Docker
+  become: true
+  ansible.builtin.service:
+    name: docker
+    state: restarted
+
+- name: Restart Containerd
+  become: true
+  ansible.builtin.service:
+    name: containerd
+    state: restarted

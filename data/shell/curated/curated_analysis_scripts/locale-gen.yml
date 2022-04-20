@@ -1,0 +1,5 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends locales
+- shell: echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
+- shell: locale-gen
+  analyze: true

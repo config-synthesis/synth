@@ -1,0 +1,6 @@
+Description=Vagrant resource allocation
+Before=slices.target
+
+[Slice]
+MemoryAccounting=true
+MemoryMin=100%

@@ -1,0 +1,23 @@
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      update_cache: true
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name:
+        - python3-minimal
+        - python3-pip
+      state: present
+- ansible:
+    executable: ansible.builtin.pip
+    arguments:
+      name: six
+      state: present
+  analyze: true
+  reduce:
+    - ansible:
+        executable: ansible.builtin.pip
+        arguments:
+          name: ujson
+          state: present

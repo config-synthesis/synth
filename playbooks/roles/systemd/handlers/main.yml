@@ -1,0 +1,13 @@
+---
+# handlers file for systemd
+
+- name: Systemd Daemon Reload
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart User Slice
+  become: true
+  ansible.builtin.service:
+    name: user-{{ ansible_user_uid }}.slice
+    state: restarted

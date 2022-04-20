@@ -1,0 +1,5 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends maildrop
+- shell: maildirmake directory
+  analyze: true
+  level: 0

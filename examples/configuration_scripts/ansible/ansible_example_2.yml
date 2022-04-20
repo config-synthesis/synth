@@ -1,0 +1,11 @@
+- hosts: all
+  tasks:
+    - ansible.builtin.apt:
+        name: nginx
+        state: present
+    - ansible.builtin.service:
+        name: nginx
+        state: started
+    - ansible.builtin.service:
+        name: nginx
+        enabled: true

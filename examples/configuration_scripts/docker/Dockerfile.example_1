@@ -1,0 +1,6 @@
+FROM debian:11
+
+
+RUN useradd -m new-user
+RUN echo 'key = value' > /home/new-user/config.json
+RUN ln -s /home/new-user/service-config.json /etc/service-config.json

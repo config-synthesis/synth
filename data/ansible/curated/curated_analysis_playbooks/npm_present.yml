@@ -1,0 +1,59 @@
+- ansible:
+    executable: ansible.builtin.command
+    arguments:
+      cmd: ansible-galaxy collection install community.general
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      update_cache: true
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: ca-certificates
+      state: present
+- ansible:
+    executable: ansible.builtin.get_url
+    arguments:
+      url: https://deb.nodesource.com/setup_16.x
+      dest: /tmp/node_setup_16.x
+      mode: 0700
+- ansible:
+    executable: ansible.builtin.command
+    arguments:
+      cmd: /tmp/node_setup_16.x
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: /tmp/node_setup_16.x
+      state: absent
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: nodejs
+      state: present
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: project
+      state: directory
+- ansible:
+    executable: community.general.npm
+    arguments:
+      global: true
+      name: npm
+      path: project
+      state: present
+- ansible:
+    executable: community.general.npm
+    arguments:
+      name: is-integer
+      path: project
+      state: present
+  analyze: true
+  reduce:
+    - ansible:
+        executable: community.general.npm
+        arguments:
+          name: is-object
+          path: project
+          state: present

@@ -1,0 +1,1 @@
+"""Synth serverless function support."""

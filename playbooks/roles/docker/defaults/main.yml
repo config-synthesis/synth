@@ -1,0 +1,5 @@
+---
+# defaults file for docker
+configure_docker_disk: true
+docker_disk: /dev/sdc
+configure_docker_systemd: false

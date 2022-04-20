@@ -1,0 +1,7 @@
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: directoryname
+      state: directory
+  analyze: true
+  level: 0

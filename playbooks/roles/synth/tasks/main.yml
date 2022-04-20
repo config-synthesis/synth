@@ -1,0 +1,104 @@
+---
+# tasks file for synth
+
+- include_role:
+    name: pyenv-python
+    public: true
+
+- include_role:
+    name: docker
+
+- name: Check for Container-Diff Executable
+  ansible.builtin.stat:
+    path: "{{ container_diff_exe }}"
+  register: container_diff_exe_check
+
+- when: not container_diff_exe_check.stat.exists
+  block:
+  - name: Download Container-Diff Installer
+    ansible.builtin.get_url:
+      url: "{{ container_diff_url }}"
+      dest: /tmp/container-diff-installer
+      mode: 0744
+
+  - name: Run Container-Diff Installer
+    become: true
+    ansible.builtin.command:
+      cmd: install /tmp/container-diff-installer {{ container_diff_exe }}
+
+  - name: Remove Container-Diff Installer
+    ansible.builtin.file:
+      path: /tmp/container-diff-installer
+      state: absent
+
+- name: Install Pipenv
+  ansible.builtin.pip:
+    executable: "{{ pyenv_python_pip }}"
+    name: pipenv
+
+- name: Clone Synth
+  when: not is_vagrant
+  ansible.builtin.git:
+    repo: https://github.com/configuration-synthesis/synth.git
+    dest: "{{ synth_dir }}"
+    version: master
+
+- name: Write Synth Env File
+  ansible.builtin.template:
+    src: .env
+    dest: "{{ synth_dir }}/.env"
+
+- name: Write Synth Config File
+  ansible.builtin.template:
+    src: config.yml
+    dest: "{{ synth_dir }}/config.yml"
+
+- name: Install Synth Dependencies
+  shell: "{{ pyenv_python_bin }}/pipenv install --system --dev --ignore-pipfile --keep-outdated"
+  args:
+    chdir: "{{ synth_dir }}"
+
+- name: Add Synth Etc Dir
+  become: true
+  ansible.builtin.file:
+    path: "{{ synth_etc_dir }}"
+    state: directory
+
+- when: is_vagrant
+  block:
+    - name: Check Synth Vagrant Flag
+      ansible.builtin.stat:
+        path: "{{ synth_etc_no_vagrant }}"
+      register: synth_etc_no_vagrant_check
+
+    - name: Add Synth Vagrant Flag
+      become: true
+      ansible.builtin.file:
+        path: "{{ synth_etc_no_vagrant }}"
+        state: touch
+      when: not synth_etc_no_vagrant_check.stat.exists
+
+# This is a bit of a hack, but linking the Synth executable to /usr/local/bin
+# allows `sudo synth` to work correctly without additional configuration.
+# Running with sudo is necessary for access to /var/lib/docker.
+- name: Link Synth Executable
+  become: true
+  ansible.builtin.file:
+    src: "{{ pyenv_python_bin }}/synth"
+    path: /usr/local/bin/synth
+    state: link
+
+- name: Install System pip3
+  become: true
+  ansible.builtin.apt:
+    name: python3-pip
+
+- name: Install Docker Libraries on System Python
+  ansible.builtin.pip:
+    name:
+      - docker
+      - docker-compose
+
+- name: Start Synth Docker Services
+  community.docker.docker_compose:
+    project_src: "{{ synth_dir }}"

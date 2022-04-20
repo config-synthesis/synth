@@ -1,0 +1,5 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends htop
+  analyze: true
+  reduce:
+    - shell: apt-get install -y --no-install-recommends curl

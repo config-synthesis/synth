@@ -1,0 +1,5 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends nginx
+- shell: systemctl start nginx
+- shell: systemctl stop nginx
+  analyze: true

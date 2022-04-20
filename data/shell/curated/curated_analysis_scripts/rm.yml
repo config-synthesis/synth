@@ -1,0 +1,8 @@
+- shell: touch filename
+- shell: rm -f filename
+  analyze: true
+  level: 0
+- shell: mkdir directory
+- shell: rm -rf directory
+  analyze: true
+  level: 0

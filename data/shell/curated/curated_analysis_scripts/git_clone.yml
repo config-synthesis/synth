@@ -1,0 +1,7 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends ca-certificates
+- shell: apt-get install -y --no-install-recommends git
+- shell: git clone https://github.com/githubtraining/hellogitworld.git hellogitworld
+  analyze: true
+  reduce:
+    - shell: git clone https://github.com/githubtraining/exercise-use-gitignore.git exercise-use-gitignore

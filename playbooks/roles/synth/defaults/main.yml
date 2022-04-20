@@ -1,0 +1,6 @@
+---
+# defaults file for synth
+is_vagrant: true
+synth_dir: /vagrant
+synth_working_directory: /vagrant/ignored
+synth_cache_directory: /vagrant/ignored/cache

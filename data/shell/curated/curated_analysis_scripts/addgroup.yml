@@ -1,0 +1,4 @@
+- shell: addgroup group1
+  analyze: true
+  reduce:
+    - shell: addgroup group2

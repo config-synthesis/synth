@@ -1,0 +1,4 @@
+- shell: apt-get update
+  analyze: true
+  reduce:
+    - shell: apt-get update

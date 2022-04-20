@@ -1,0 +1,28 @@
+---
+# tasks file for systemd
+
+- name: Get User UID
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ ansible_user }}"
+
+- name: Set UID Fact
+  ansible.builtin.set_fact:
+    ansible_user_uid: "{{ getent_passwd[ansible_user][1] }}"
+
+- name: Create User Slice
+  become: true
+  ansible.builtin.template:
+    src: user-xxxx.slice
+    dest: /etc/systemd/system/user-{{ ansible_user_uid }}.slice
+  notify:
+    - Systemd Daemon Reload
+    - Restart User Slice
+
+- name: Start User Slice
+  become: true
+  ansible.builtin.systemd:
+    name: user-{{ ansible_user_uid }}.slice
+    state: started
+    enabled: true
+    daemon_reload: true

@@ -1,0 +1,28 @@
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      update_cache: true
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: ca-certificates
+      state: present
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: git
+      state: present
+- ansible:
+    executable: ansible.builtin.git
+    arguments:
+      repo: https://github.com/githubtraining/hellogitworld.git
+      dest: hellogitworld
+      clone: true
+  analyze: true
+  reduce:
+    - ansible:
+        executable: ansible.builtin.git
+        arguments:
+          repo: https://github.com/githubtraining/exercise-use-gitignore.git
+          dest: exercise-use-gitignore
+          clone: true

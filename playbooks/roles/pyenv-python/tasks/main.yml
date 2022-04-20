@@ -1,0 +1,83 @@
+---
+# tasks file for pyenv-python
+
+- name: Install Packages for Pyenv
+  become: true
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - curl
+      - git
+      - libbz2-dev
+      - libffi-dev
+      - liblzma-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - llvm
+      - python-openssl
+      - tk-dev
+      - wget
+      - xz-utils
+      - zlib1g-dev
+    update_cache: true
+
+- name: Check for Pyenv Executable
+  ansible.builtin.stat:
+    path: "{{ pyenv_exe }}"
+  register: pyenv_exe_check
+
+- when: not pyenv_exe_check.stat.exists
+  block:
+
+    - name: Download Pyenv Installer
+      ansible.builtin.get_url:
+        url: https://pyenv.run
+        dest: /tmp/pyenv-installer
+        mode: 0744
+
+    - name: Run Pyenv Installer
+      ansible.builtin.command:
+        cmd: /tmp/pyenv-installer
+
+    - name: Remove Pyenv Installer
+      ansible.builtin.file:
+        path: /tmp/pyenv-installer
+        state: absent
+
+- name: Add Pyenv Configuration to .bashrc
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      export PATH="{{ pyenv_bin }}:$PATH"
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
+
+- name: Add Pyenv Configuration to .profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.profile"
+    block: |
+      eval "$(pyenv init --path)"
+
+- name: Check for Python Version
+  ansible.builtin.stat:
+    path: "{{ pyenv_python_version }}"
+  register: python_version_check
+
+- name: Install Python
+  ansible.builtin.command:
+    cmd: "{{ pyenv_exe }} install {{ python_version }}"
+  when: not python_version_check.stat.exists
+
+- name: Check Pyenv Version
+  ansible.builtin.command:
+    cmd: "{{ pyenv_exe }} version-name"
+  register: pyenv_version_name
+  changed_when: false
+
+- name: Set the Pyenv Global Default
+  ansible.builtin.command:
+    cmd: "{{ pyenv_exe }} global {{ python_version }}"
+  when: pyenv_version_name.stdout.strip() != python_version

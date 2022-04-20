@@ -1,0 +1,43 @@
+# OS Files
+*.DS_Store
+
+# IDE Files
+.idea/
+*.iml
+
+# Python files
+__pycache__/
+*.pyc
+*.egg-info
+.mypy_cache/
+build/
+pyproject.toml
+
+# Vagrant files
+.vagrant/
+
+# Terraform files.
+*.tfstate*
+.terraform
+id_rsa*
+ssh.digitalocean
+inventory.digitalocean
+
+# Auto-generated documentation.
+sphinx-docs/build
+sphinx-docs/source/apidoc
+
+# Build files in the examples directory.
+examples/**/*.serverless
+examples/**/*.zip
+examples/**/dependencies
+examples/**/layers-pkg
+
+# Test Cache
+.coverage
+htmlcov/
+
+# Synth files and directories.
+ignored/
+/config.yml
+/.env

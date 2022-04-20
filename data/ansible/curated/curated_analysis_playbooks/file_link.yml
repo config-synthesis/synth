@@ -1,0 +1,13 @@
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      path: file
+      state: touch
+- ansible:
+    executable: ansible.builtin.file
+    arguments:
+      src: file
+      dest: symlink
+      state: link
+  analyze: true
+  level: 0

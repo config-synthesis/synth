@@ -1,0 +1,6 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends apache2
+- shell: a2enmod ssl
+  analyze: true
+  reduce:
+    - shell: a2enmod proxy

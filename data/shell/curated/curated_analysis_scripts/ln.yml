@@ -1,0 +1,4 @@
+- shell: touch file
+- shell: ln -sf file symlink
+  analyze: true
+  level: 0

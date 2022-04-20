@@ -1,0 +1,173 @@
+---
+# tasks file for docker
+- when: configure_docker_disk
+  block:
+    - name: Create the Docker Volume Group
+      become: true
+      community.general.lvg:
+        vg: docker
+        pvs: "{{ docker_disk }}"
+        pvresize: true
+
+    - name: Create the Docker Run Logical Volume
+      become: true
+      community.general.lvol:
+        vg: docker
+        lv: docker-run
+        size: 10G
+
+    - name: Create the Docker Run Logical Volume Filesystem
+      become: true
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/docker/docker-run
+
+    - name: Create the Docker Run Directory
+      become: true
+      ansible.builtin.file:
+        path: /run/docker
+        state: directory
+
+    - name: Mount the Docker Run Logical Volume
+      become: true
+      ansible.posix.mount:
+        src: /dev/docker/docker-run
+        path: /run/docker
+        state: mounted
+        fstype: ext4
+
+    - name: Create the Docker Data Logical Volume
+      become: true
+      community.general.lvol:
+        vg: docker
+        lv: docker-data
+        size: +100%FREE
+
+    - name: Create the Docker Data Logical Volume Filesystem
+      become: true
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/docker/docker-data
+
+    - name: Create the Docker Data Directory
+      become: true
+      ansible.builtin.file:
+        path: /var/lib/docker
+        state: directory
+
+    - name: Mount the Docker Data Logical Volume
+      become: true
+      ansible.posix.mount:
+        src: /dev/docker/docker-data
+        path: /var/lib/docker
+        state: mounted
+        fstype: ext4
+
+- name: Install Packages for Docker
+  become: true
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - cgroup-tools
+      - curl
+      - gnupg-agent
+      - jq
+      - software-properties-common
+    update_cache: true
+
+- name: Add Docker GPG Key
+  become: true
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+
+- name: Add Docker Repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+
+- name: Install Docker
+  become: true
+  ansible.builtin.apt:
+    name:
+      - containerd.io
+      - docker-ce
+      - docker-ce-cli
+
+- name: Start Docker
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Add User to Docker Group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    append: true
+    groups: [docker]
+
+- when: configure_docker_systemd
+  block:
+    - name: Set OOM Kill Allocating Task
+      become: true
+      ansible.builtin.template:
+        src: vm.conf
+        dest: /etc/sysctl.d/vm.conf
+      notify:
+        - Restart Procps
+
+    - name: Create Docker Slice
+      become: true
+      ansible.builtin.template:
+        src: docker.slice
+        dest: /etc/systemd/system/docker.slice
+      notify:
+        - Systemd Daemon Reload
+        - Restart Docker Slice
+
+    - name: Start Docker Slice
+      become: true
+      ansible.builtin.systemd:
+        name: docker.slice
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    - name: Create Docker Systemd Directory
+      become: true
+      ansible.builtin.file:
+        path: /etc/systemd/system/docker.service.d
+        state: directory
+
+    - name: Create Docker Slice Conf
+      become: true
+      ansible.builtin.template:
+        src: docker-slice.conf
+        dest: /etc/systemd/system/docker.service.d/docker-slice.conf
+      notify:
+        - Systemd Daemon Reload
+        - Restart Docker
+
+    - name: Create Containerd Systemd Directory
+      become: true
+      ansible.builtin.file:
+        path: /etc/systemd/system/containerd.service.d
+        state: directory
+
+    - name: Create Containerd Slice Conf
+      become: true
+      ansible.builtin.template:
+        src: docker-slice.conf
+        dest: /etc/systemd/system/containerd.service.d/slice.conf
+      notify:
+        - Systemd Daemon Reload
+        - Restart Containerd
+
+    - name: Create Docker Daemon Config
+      become: true
+      ansible.builtin.template:
+        src: daemon.json
+        dest: /etc/docker/daemon.json
+      notify:
+        - Restart Docker

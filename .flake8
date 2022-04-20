@@ -1,0 +1,46 @@
+[flake8]
+
+count = true
+statistics = true
+show-source = true
+doctests = true
+docstring-convention = numpy
+
+# flake8-annotations
+suppress-none-returning = true
+
+# flake8-import-order
+import-order-style = smarkets
+application-import-names =
+
+    synth
+    tests
+
+ignore =
+
+    W503
+
+    # flake8-annotations
+    ANN002
+    ANN003
+    ANN101
+    ANN102
+
+    # flake8-bandit
+    S322
+    S404
+    S603
+    S607
+
+per-file-ignores =
+
+    synth/cli/**: T001
+    tests/**: S101
+
+exclude =
+
+    .git/
+    __pycache__
+    examples
+    ignored
+    sphinx-docs

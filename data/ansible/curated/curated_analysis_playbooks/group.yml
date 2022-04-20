@@ -1,0 +1,12 @@
+- ansible:
+    executable: ansible.builtin.group
+    arguments:
+      name: group1
+      state: present
+  analyze: true
+  reduce:
+    - ansible:
+        executable: ansible.builtin.group
+        arguments:
+          name: group2
+          state: present

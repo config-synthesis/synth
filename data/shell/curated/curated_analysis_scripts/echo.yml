@@ -1,0 +1,3 @@
+- shell: echo -n content >> filename
+  analyze: true
+  level: 0

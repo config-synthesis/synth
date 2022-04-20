@@ -1,0 +1,9 @@
+- shell: apt-get update
+- shell: apt-get install -y --no-install-recommends ca-certificates
+- shell: apt-get install -y --no-install-recommends git
+- shell: git clone https://github.com/githubtraining/hellogitworld.git .
+- shell: git checkout master
+- shell: git checkout ef7bebf8bdb1919d947afe46ab4b2fb4278039b3
+  analyze: true
+  reduce:
+    - shell: git checkout ebbbf773431ba07510251bb03f9525c7bab2b13a

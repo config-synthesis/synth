@@ -1,0 +1,20 @@
+- ansible:
+    executable: ansible.builtin.command
+    arguments:
+      cmd: ansible-galaxy collection install community.general
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      update_cache: true
+- ansible:
+    executable: ansible.builtin.apt
+    arguments:
+      name: git
+      state: present
+- ansible:
+    executable: community.general.git_config
+    arguments:
+      scope: global
+      name: user.name
+      value: username
+  analyze: true

@@ -1,0 +1,7 @@
+---
+# vars file for synth
+
+container_diff_exe: /usr/local/bin/container-diff
+container_diff_url: https://storage.googleapis.com/container-diff/latest/container-diff-linux-amd64
+synth_etc_dir: /etc/synth
+synth_etc_no_vagrant: "{{ synth_etc_dir }}/no_vagrant"

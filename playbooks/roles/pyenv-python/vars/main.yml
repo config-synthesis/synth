@@ -1,0 +1,11 @@
+---
+# vars file for pyenv-python
+
+pyenv_dir: "{{ ansible_env.HOME }}/.pyenv"
+pyenv_bin: "{{ pyenv_dir }}/bin"
+pyenv_exe: "{{ pyenv_bin }}/pyenv"
+pyenv_versions: "{{ pyenv_dir }}/versions"
+pyenv_python_version: "{{ pyenv_versions }}/{{ python_version }}"
+pyenv_python_bin: "{{ pyenv_python_version }}/bin"
+pyenv_python_exe: "{{ pyenv_python_bin }}/python"
+pyenv_python_pip: "{{ pyenv_python_bin }}/pip"

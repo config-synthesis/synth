@@ -1,0 +1,4 @@
+---
+# defaults file for pyenv-python
+
+python_version: "3.9.7"

@@ -1,0 +1,9 @@
+FROM debian:11
+
+
+RUN apt-get update
+RUN apt-get install -y python3-minimal python3-pip
+RUN pip install networkx
+
+
+CMD python3 -c 'import networkx; help(networkx)'
